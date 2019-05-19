@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>GLS Fullstack Exercise</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap core CSS -->
+
+	<!-- <link href="../static/css/bootstrap.min.css" rel="stylesheet"> -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<style type="text/css">
+		.popover-title .close{
+        position: relative;
+        bottom: 3px;
+    }
+
+		.myClass1 {padding: 10px 20px;border: 1px solid green;margin-bottom: 50px;}
+
+		.myClass2 {padding: 50px;border: 1px solid red;display: inline-block;position: absolute;right: 0px;}
+
+		.myClass3 {padding: 50px;border: 1px solid blue;display: inline-block;position: absolute;left: 0px; bottom: 0px;}		
+	</style>
+
+</head>
+<body>
+	<h1>GLS Fullstack Exercise</h1>
+	<div class="myClass1" id="id_1" data-container="body" data-placement="bottom" >First tip on me using id.</div>
+
+	<div class="myClass2" data-container="body" data-placement="left" >Second tip on me using class.</div>
+
+	<div class="myClass3" data-container="body" data-placement="top" >I am the 3rd div. 3rd tip on me using xpath.</div>
+
+
+</body>
+<!-- <script src="../static/js/bootstrap.min.js" rel="javascript"></script> -->
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+	$(function () {
+		// initialilisation on page reload
+		NEXT_ID = {{step['next']}};
+    	$("{{step['selector']}}").popover({
+	        placement : 'top',
+	        html : true,
+	        title : '<h4>Hint</h4>',
+	        content : '<div class="media"><p>{{ step["content"] }}</p></div><a href="#" id="next_tip_please" class="btn btn-info" data-dismiss="alert">Got it! Next</a>'
+	    });
+	    $("{{step['selector']}}").popover('show');
+
+	    // guided learning from next stage
+	    $(document).on("click", "#next_tip_please" , function(){
+	        $(this).parents(".popover").popover('hide');
+	        if(NEXT_ID == null){
+	        	alert("You have reached the end of guided learning");
+	        	return false;
+	        }
+
+	        // calling the server for ajax call
+	        $.ajax({
+	        	method: "GET",
+	            url : '/get_next_step?next_id=' + NEXT_ID,
+	            dataType: "json",
+	            success: function(data) {
+	            	NEXT_ID = data["results"]["next"];
+        	    	$(data["results"]["selector"]).popover({
+				        placement : 'top',
+				        html : true,
+				        title : '<h4>Hint</h4>',
+				        content : '<div class="media"><p>' + data["results"]["content"] + '</p></div><a href="#" id="next_tip_please" class="btn btn-info" data-dismiss="alert">Got it! Next</a>'
+				    });
+				    $(data["results"]["selector"]).popover('show');
+
+	            }
+	        });
+	    });
+
+	})
+
+</script>
+</html>
