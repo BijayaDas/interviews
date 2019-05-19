@@ -1,6 +1,8 @@
 # gls-oracle
 GLS Assignment
 
+Note: Output Screenshots uploaded in screenshots folder
+
 1. Open Terminal
 2. git clone project
 3. cd to project directory
