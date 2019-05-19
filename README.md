@@ -1,6 +1,8 @@
 # gls-oracle
 GLS Assignment
 
+- REQUIREMENT ASSUMPTIONS: upon hiting http://localhost:5000/ the first guide tip should display default, then upon clicking ok button, It will navigate to next guide sequentially as programmed in the backend guide.json, once you reached end of guded learning system it should throw an alert you have reached the end of GLS. 
+
 Note: Output Screenshots uploaded in screenshots folder
 
 1. Open Terminal
